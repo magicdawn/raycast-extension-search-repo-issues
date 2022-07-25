@@ -6,8 +6,8 @@ import ms from 'ms'
 import reusePromise from 'reuse-promise'
 import { Issue, IssueByList } from '../define'
 import { store } from '../storage'
+import { octokit, REPO, toastError } from '../util'
 import { state } from './state'
-import { octokit, toastError } from '../util'
 
 const maxAge = ms('1d')
 
@@ -22,9 +22,11 @@ export async function getAllIssues(force?: boolean): Promise<Issue[]> {
     }
   }
 
+  const [owner, repo] = REPO.split('/')
+
   const iterator = octokit.paginate.iterator(octokit.rest.issues.listForRepo, {
-    owner: 'magicdawn',
-    repo: 'magicdawn',
+    owner,
+    repo,
     per_page: 100,
   })
 
