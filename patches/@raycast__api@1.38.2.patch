@@ -1,0 +1,10 @@
+diff --git a/bin/ray b/bin/ray
+index 14c861cad8bb1bd9e430102ae8832f6b326b3b84..cbde10926b0bc195bf310942c13528b806f737a7 100755
+--- a/bin/ray
++++ b/bin/ray
+@@ -15,4 +15,4 @@ if [ "${ARCH_NAME}" = "arm64" ]; then
+   ARCH_DIR="arm64"
+ fi
+ 
+-"${RESOLVED_DIR}/${ARCH_DIR}/ray" "$@"
++"${DIR}/${ARCH_DIR}/ray" "$@"
