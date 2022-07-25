@@ -8,6 +8,15 @@ I use https://github.com/magicdawn/magicdawn/issues for knowledge management.
 with this extension, I can open issue quickly.
 But it's not bound to this task.
 
+## Install Guide
+
+not published to Raycast store & will not, use source code instead
+
+- `git clone <repo>`
+- `pnpm install`
+- `pnpm dev` this will install the extension, then close
+- `pnpm build` use the build version
+
 ## usage
 
 ### config the extension
