@@ -2,11 +2,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
+import './typings/index.d.ts'
+import './typings/valtio.d.ts'
+
 import { Action, ActionPanel, Icon, List } from '@raycast/api'
 import { useMount } from 'ahooks'
 import { useSnapshot } from 'valtio'
-import { Issue, IssueByList } from './define'
-import { state, Mode, refreshAllIssues, webSearchIssues } from './store'
+import { Issue } from './define'
+import { Mode, refreshAllIssues, state, webSearchIssues } from './store'
 import { REPO } from './util'
 
 function stringifyLabels(labels: Issue['labels']) {
@@ -62,8 +65,7 @@ export default function Command() {
     localFilteredIssues,
   } = useSnapshot(state)
 
-  const issueList =
-    mode === 'local-search' ? (localFilteredIssues as IssueByList[]) : searchResultIssues
+  const issueList = mode === 'local-search' ? localFilteredIssues : searchResultIssues
 
   const subtitle =
     mode === 'local-search'
