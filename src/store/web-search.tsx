@@ -49,10 +49,7 @@ async function webSearchIssueRequest(searchText: string, signal: AbortSignal) {
   try {
     const json = await octokit.rest.search.issuesAndPullRequests({
       request: { signal: signal },
-      owner: 'magicdawn',
-      repo: 'magicdawn',
       q: `${searchText} type:issue state:open repo:${REPO}`,
-      sort: 'updated',
     })
 
     const { total_count: totalCount, items } = json.data
