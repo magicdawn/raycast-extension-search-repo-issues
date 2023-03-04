@@ -8,7 +8,14 @@
   "categories": [
     "Developer Tools"
   ],
-  "license": "MIT",
+  "scripts": {
+    "build": "ray build -e dist",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "publish": "ray publish",
+    "prepare": "husky install"
+  },
   "commands": [
     {
       "name": "index",
@@ -42,6 +49,15 @@
       ]
     }
   ],
+  "pnpm": {
+    "patchedDependencies": {}
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,less,md}": [
+      "prettier --write"
+    ]
+  },
+  "license": "MIT",
   "dependencies": {
     "@raycast/api": "^1.48.5",
     "ahooks": "^3.7.5",
@@ -68,21 +84,5 @@
     "lint-staged": "^13.1.2",
     "prettier": "^2.8.4",
     "typescript": "^4.9.5"
-  },
-  "scripts": {
-    "build": "ray build -e dist",
-    "dev": "ray develop",
-    "fix-lint": "ray lint --fix",
-    "lint": "ray lint",
-    "publish": "ray publish",
-    "prepare": "husky install"
-  },
-  "pnpm": {
-    "patchedDependencies": {}
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,less,md}": [
-      "prettier --write"
-    ]
   }
 }

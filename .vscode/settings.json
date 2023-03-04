@@ -1,13 +1,12 @@
 {
-	"files.exclude": {
-		"**/.git": true,
-		"**/.svn": true,
-		"**/.hg": true,
-		"**/CVS": true,
-		"**/.DS_Store": true,
-		"**/Thumbs.db": true,
-		"**/node_modules": true
-	},
-	"typescript.tsdk": "node_modules/typescript/lib",
-	"typescript.locale": "en"
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.locale": "en"
 }
