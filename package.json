@@ -37,14 +37,6 @@
           "description": "GitHub API token",
           "type": "textfield",
           "required": true
-        },
-        {
-          "name": "httpProxy",
-          "title": "using proxy",
-          "description": "using httpProxy for github api request",
-          "placeholder": "e.g http://127.0.0.1:7890",
-          "type": "textfield",
-          "required": false
         }
       ]
     }
