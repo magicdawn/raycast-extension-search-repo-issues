@@ -6,13 +6,13 @@ type OctokitType = InstanceType<typeof Octokit>
 // helper
 export type ArrayInnerType<T extends any[]> = T extends Array<infer Inner> ? Inner : never
 
-type IssueArrayBySearch = Awaited<
-  ReturnType<OctokitType['rest']['search']['issuesAndPullRequests']>
->['data']['items']
-export type IssueBySearch = ArrayInnerType<IssueArrayBySearch>
+export type IssueBySearch = ArrayInnerType<
+  Awaited<ReturnType<OctokitType['rest']['search']['issuesAndPullRequests']>>['data']['items']
+>
 
-type IssueArrayByList = Awaited<ReturnType<OctokitType['rest']['issues']['listForRepo']>>['data']
-export type IssueByList = ArrayInnerType<IssueArrayByList>
+export type IssueByList = ArrayInnerType<
+  Awaited<ReturnType<OctokitType['rest']['issues']['listForRepo']>>['data']
+>
 
 // 使用 search
 export type Issue = IssueBySearch | IssueByList

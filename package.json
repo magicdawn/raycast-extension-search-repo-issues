@@ -59,6 +59,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@babel/runtime": "^7.21.0",
     "@raycast/api": "^1.48.5",
     "ahooks": "^3.7.5",
     "conf": "^10.2.0",

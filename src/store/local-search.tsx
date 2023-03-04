@@ -4,14 +4,14 @@
 
 import ms from 'ms'
 import reusePromise from 'reuse-promise'
-import { Issue, IssueByList } from '../define'
+import { IssueByList } from '../define'
 import { store } from '../storage'
 import { octokit, REPO, toastError } from '../util'
 import { state } from './state'
 
 const maxAge = ms('1d')
 
-export async function getAllIssues(force?: boolean): Promise<Issue[]> {
+export async function getAllIssues(force?: boolean): Promise<IssueByList[]> {
   // cache
   {
     if (!force) {
