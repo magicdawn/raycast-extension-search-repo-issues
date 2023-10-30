@@ -2,36 +2,32 @@
 
 import { Fzf } from 'fzf'
 import { useMemo } from 'react'
-import { useSnapshot } from 'valtio'
-import { proxyWithComputed } from 'valtio/utils'
+import { proxy, useSnapshot } from 'valtio'
 import { IssueByList, IssueBySearch } from '../define'
 
 export type Mode = 'web-search' | 'local-search'
 
-export const state = proxyWithComputed(
-  {
-    isLoading: false,
-    mode: 'local-search' as Mode,
-    searchText: '',
+export const state = proxy({
+  isLoading: false,
+  mode: 'local-search' as Mode,
+  searchText: '',
 
-    // web search
-    searchResultTotalCount: undefined as number | undefined,
-    searchResultIssues: [] as IssueBySearch[],
+  // web search
+  searchResultTotalCount: undefined as number | undefined,
+  searchResultIssues: [] as IssueBySearch[],
 
-    // local search
-    listAllIssues: [] as IssueByList[],
+  // local search
+  listAllIssues: [] as IssueByList[],
+  // local search
+  get localFilteredIssues() {
+    const { mode, listAllIssues, searchText } = this
+    return filterIssues(
+      mode,
+      searchText,
+      listAllIssues /* force remove readonly */ as IssueByList[]
+    )
   },
-  {
-    // local search
-    localFilteredIssues: ({ mode, listAllIssues, searchText }) => {
-      return filterIssues(
-        mode,
-        searchText,
-        listAllIssues /* force remove readonly */ as IssueByList[]
-      )
-    },
-  }
-)
+})
 
 function filterIssues(mode: Mode, searchText: string, listAllIssues: IssueByList[]): IssueByList[] {
   console.log('runing filterIssues: mode:"%s" searchText:"%s"', mode, searchText)

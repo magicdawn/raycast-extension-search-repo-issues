@@ -110,11 +110,12 @@ export default function Command() {
               key={issue.title}
               title={issue.title}
               subtitle={(issue.body || '').slice(0, 50)}
-              accessoryTitle={stringifyLabels(issue.labels)}
+              accessories={[{ text: stringifyLabels(issue.labels) }]}
               actions={
                 <ActionPanel>
                   <ActionPanel.Section>
                     <Action.OpenInBrowser title='打开' url={issue.html_url} />
+                    <Action.CopyToClipboard title='复制' content={issue.html_url} />
                   </ActionPanel.Section>
 
                   <ActionPanel.Section>
