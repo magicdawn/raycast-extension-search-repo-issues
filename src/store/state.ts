@@ -3,7 +3,7 @@
 import { Fzf } from 'fzf'
 import { useMemo } from 'react'
 import { proxy, useSnapshot } from 'valtio'
-import { IssueByList, IssueBySearch } from '../define'
+import { IssueByList, IssueBySearch } from '../define.js'
 
 export type Mode = 'web-search' | 'local-search'
 
@@ -35,7 +35,7 @@ function filterIssues(mode: Mode, searchText: string, listAllIssues: IssueByList
   if (mode === 'web-search' || !searchText) return listAllIssues
 
   const fzf = new Fzf<IssueByList[]>(listAllIssues, {
-    selector: (issue) =>
+    selector: (issue: IssueByList) =>
       [
         issue.title,
         issue.body,
@@ -45,7 +45,7 @@ function filterIssues(mode: Mode, searchText: string, listAllIssues: IssueByList
         .join(' '),
   })
   const result = fzf.find(searchText)
-  const list = result.map((resultItem) => resultItem.item)
+  const list = result.map((resultItem: any) => resultItem.item)
   return list
 }
 

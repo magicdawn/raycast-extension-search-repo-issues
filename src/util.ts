@@ -1,4 +1,5 @@
 import { getPreferenceValues, showToast, Toast } from '@raycast/api'
+import fetch from 'node-fetch'
 import { Octokit } from 'octokit'
 
 export function toastError(message: string, title = 'Error') {
@@ -23,6 +24,7 @@ export const REPO = repo || ''
 export const octokit = new Octokit({
   auth: ghToken || undefined,
   request: {
+    fetch,
     // agent,
   },
 })

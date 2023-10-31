@@ -3,11 +3,13 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import ms from 'ms'
-import reusePromise from 'reuse-promise'
-import { IssueByList } from '../define'
-import { store } from '../storage'
-import { octokit, REPO, toastError } from '../util'
-import { state } from './state'
+import reusePromiseExports from 'reuse-promise'
+import { IssueByList } from '../define.js'
+import { store } from '../storage.js'
+import { octokit, REPO, toastError } from '../util.js'
+import { state } from './state.js'
+
+const reusePromise = reusePromiseExports.default
 
 const maxAge = ms('1d')
 

@@ -2,7 +2,7 @@
 
 import { environment } from '@raycast/api'
 import Conf from 'conf'
-import { IssueByList } from './define'
+import { IssueByList } from './define.js'
 
 // dir already namespaced
 const BASE_DIR = environment.supportPath

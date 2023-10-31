@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { IssueBySearch } from '../define'
-import { octokit, REPO, toastError } from '../util'
-import { state } from './state'
+import { IssueBySearch } from '../define.js'
+import { octokit, REPO, toastError } from '../util.js'
+import { state } from './state.js'
 
 let abortControler: AbortController | undefined
 export async function webSearchIssues(searchText: string) {
