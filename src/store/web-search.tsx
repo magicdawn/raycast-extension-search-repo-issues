@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { IssueBySearch } from '../define.js'
+import type { IssueBySearch } from '../define.js'
 import { octokit, REPO, toastError } from '../util.js'
 import { state } from './state.js'
 

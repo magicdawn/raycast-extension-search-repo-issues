@@ -4,8 +4,8 @@
 
 import ms from 'ms'
 import reusePromiseExports from 'reuse-promise'
-import { IssueByList } from '../define.js'
-import { store } from '../storage.js'
+import type { IssueByList } from '../define.js'
+import { issuesCacheStorage } from '../storage.js'
 import { octokit, REPO, toastError } from '../util.js'
 import { state } from './state.js'
 
@@ -17,7 +17,7 @@ export async function getAllIssues(force?: boolean): Promise<IssueByList[]> {
   // cache
   {
     if (!force) {
-      const { issues, issuesUpdatedAt } = store.store
+      const { issues, issuesUpdatedAt } = issuesCacheStorage.store
       if (issues.length && issuesUpdatedAt && Date.now() - issuesUpdatedAt < maxAge) {
         return issues
       }
@@ -46,7 +46,7 @@ export async function getAllIssues(force?: boolean): Promise<IssueByList[]> {
   })
 
   // persist
-  store.set({ issues, issuesUpdatedAt: Date.now() })
+  issuesCacheStorage.set({ issues, issuesUpdatedAt: Date.now() })
 
   // use it
   return issues

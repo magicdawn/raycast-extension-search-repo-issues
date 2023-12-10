@@ -8,5 +8,8 @@
     "**/Thumbs.db": true
   },
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.locale": "en"
+  "typescript.locale": "en",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  }
 }

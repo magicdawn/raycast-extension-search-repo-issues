@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Octokit } from 'octokit'
+import type { Octokit } from 'octokit'
 type OctokitType = InstanceType<typeof Octokit>
 
 // helper

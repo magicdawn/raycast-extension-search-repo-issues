@@ -2,22 +2,41 @@
 
 import { environment } from '@raycast/api'
 import Conf from 'conf'
-import { IssueByList } from './define.js'
+import type { IssueByList } from './define.js'
+import type { SearchMode } from './store/state.js'
 
 // dir already namespaced
 const BASE_DIR = environment.supportPath
 console.log(BASE_DIR)
 
-type Data = {
+/**
+ * default config
+ */
+
+export type DefaultStorage = {
+  mode: SearchMode
+}
+
+export const storage = new Conf<DefaultStorage>({
+  cwd: BASE_DIR,
+  configName: 'default',
+  defaults: {
+    mode: 'local-search',
+  },
+})
+
+/**
+ * issues cache
+ */
+
+export type IssuesCacheData = {
   issues: IssueByList[]
   issuesUpdatedAt?: number
 }
-const defaultData: Data = {
-  issues: [],
-}
-
-// schema
-export const store = new Conf<Data>({
+export const issuesCacheStorage = new Conf<IssuesCacheData>({
   cwd: BASE_DIR,
-  defaults: defaultData,
+  configName: 'issues',
+  defaults: {
+    issues: [],
+  },
 })

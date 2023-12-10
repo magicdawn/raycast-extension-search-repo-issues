@@ -8,8 +8,9 @@ import './typings/valtio.d.ts'
 import { Action, ActionPanel, Icon, List } from '@raycast/api'
 import { useMount } from 'ahooks'
 import { useSnapshot } from 'valtio'
-import { Issue } from './define.js'
-import { Mode, refreshAllIssues, state, webSearchIssues } from './store/index.js'
+import type { Issue } from './define.js'
+import type { SearchMode } from './store/index.js'
+import { refreshAllIssues, state, webSearchIssues } from './store/index.js'
 import { REPO } from './util.js'
 
 console.log(process.versions)
@@ -30,7 +31,7 @@ const onAppMount = () => {
   }
 }
 
-const onModeChange = (newMode: Mode) => {
+const onModeChange = (newMode: SearchMode) => {
   state.mode = newMode
   onAppMount() // re-mount in new mode
 }
@@ -51,7 +52,7 @@ const onActionLocalRefreshAllIssues = () => {
 }
 
 const onActionToggleMode = () => {
-  const newMode: Mode = state.mode === 'local-search' ? 'web-search' : 'local-search'
+  const newMode: SearchMode = state.mode === 'local-search' ? 'web-search' : 'local-search'
   onModeChange(newMode)
 }
 
@@ -73,8 +74,8 @@ export default function Command() {
     mode === 'local-search'
       ? `找到 ${issueList.length} 条`
       : searchResultTotalCount === searchResultIssues.length
-      ? `找到 ${searchResultIssues.length} 条`
-      : `找到 (${searchResultIssues.length}/${searchResultTotalCount}) 条`
+        ? `找到 ${searchResultIssues.length} 条`
+        : `找到 (${searchResultIssues.length}/${searchResultTotalCount}) 条`
 
   return (
     <List
@@ -87,18 +88,18 @@ export default function Command() {
           tooltip='Select Drink Type'
           value={mode}
           onChange={(newValue) => {
-            onModeChange(newValue as Mode)
+            onModeChange(newValue as SearchMode)
           }}
         >
           <List.Dropdown.Section title='搜索类型'>
             <List.Dropdown.Item
-              key={'local-search' as Mode}
-              value={'local-search' as Mode}
+              key={'local-search' as SearchMode}
+              value={'local-search' as SearchMode}
               title={'search with Local fzf filter'}
             />
             <List.Dropdown.Item
-              key={'web-search' as Mode}
-              value={'web-search' as Mode}
+              key={'web-search' as SearchMode}
+              value={'web-search' as SearchMode}
               title={'search with GitHub API'}
             />
           </List.Dropdown.Section>

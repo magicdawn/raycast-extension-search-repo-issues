@@ -1,35 +1,56 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Fzf } from 'fzf'
+import { isEqual, pick } from 'lodash-es'
 import { useMemo } from 'react'
-import { proxy, useSnapshot } from 'valtio'
-import { IssueByList, IssueBySearch } from '../define.js'
+import { proxy, snapshot, subscribe, useSnapshot } from 'valtio'
+import type { IssueByList, IssueBySearch } from '../define.js'
+import type { DefaultStorage } from '../storage.js'
+import { storage } from '../storage.js'
 
-export type Mode = 'web-search' | 'local-search'
+export type SearchMode = 'web-search' | 'local-search'
 
+const { mode } = storage.store
 export const state = proxy({
   isLoading: false,
-  mode: 'local-search' as Mode,
+  mode,
   searchText: '',
 
   // web search
   searchResultTotalCount: undefined as number | undefined,
   searchResultIssues: [] as IssueBySearch[],
 
-  // local search
+  /**
+   * local search
+   */
   listAllIssues: [] as IssueByList[],
-  // local search
   get localFilteredIssues() {
     const { mode, listAllIssues, searchText } = this
     return filterIssues(
       mode,
       searchText,
-      listAllIssues /* force remove readonly */ as IssueByList[]
+      listAllIssues /* force remove readonly */ as IssueByList[],
     )
   },
 })
 
-function filterIssues(mode: Mode, searchText: string, listAllIssues: IssueByList[]): IssueByList[] {
+/**
+ * persist when needed
+ */
+let lastPicked: Partial<DefaultStorage> | undefined
+subscribe(state, () => {
+  const picked = pick(snapshot(state), ['mode']) as Partial<DefaultStorage>
+  if (!lastPicked || !isEqual(lastPicked, picked)) {
+    storage.set(picked)
+  }
+  lastPicked = picked
+})
+
+function filterIssues(
+  mode: SearchMode,
+  searchText: string,
+  listAllIssues: IssueByList[],
+): IssueByList[] {
   console.log('runing filterIssues: mode:"%s" searchText:"%s"', mode, searchText)
 
   if (mode === 'web-search' || !searchText) return listAllIssues
