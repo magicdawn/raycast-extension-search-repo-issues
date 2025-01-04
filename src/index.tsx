@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-
 import { Action, ActionPanel, Icon, List } from '@raycast/api'
 import { useMount } from 'ahooks'
 import { useSnapshot } from 'valtio'
@@ -84,17 +80,17 @@ export default function Command() {
       onSearchTextChange={onSearchTextChange}
       searchBarAccessory={
         <List.Dropdown
-          tooltip='Select Drink Type'
+          tooltip='Select Search Mode'
           value={mode}
           onChange={(newValue) => {
             onModeChange(newValue as SearchMode)
           }}
         >
-          <List.Dropdown.Section title='搜索类型'>
+          <List.Dropdown.Section title='Search Mode'>
             <List.Dropdown.Item
               key={SearchMode.LocalSearch as SearchMode}
               value={SearchMode.LocalSearch as SearchMode}
-              title={'search with Local fzf filter'}
+              title={'search with Local Fuzzy Search'}
             />
             <List.Dropdown.Item
               key={SearchMode.WebSearch}
@@ -139,7 +135,7 @@ export default function Command() {
                     <Action
                       icon={Icon.Switch}
                       title={`切换搜索模式 (to ${
-                        mode === SearchMode.LocalSearch ? 'GitHub API' : 'Local filter'
+                        mode === SearchMode.LocalSearch ? 'GitHub API' : 'Local Fuzzy Search'
                       })`}
                       onAction={onActionToggleMode}
                     />
