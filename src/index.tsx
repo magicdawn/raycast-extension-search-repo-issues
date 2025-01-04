@@ -6,9 +6,9 @@ import { Action, ActionPanel, Icon, List } from '@raycast/api'
 import { useMount } from 'ahooks'
 import { useSnapshot } from 'valtio'
 import type { Issue } from './define.js'
-import { SearchMode } from './store/index.js'
 import { refreshAllIssues, state, webSearchIssues } from './store/index.js'
 import { REPO } from './util.js'
+import { SearchMode } from './enums/SearchMode.js'
 
 console.log(process.versions)
 

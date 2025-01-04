@@ -1,17 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Fzf } from 'fzf'
+import Fuse from 'fuse.js'
 import { isEqual, pick } from 'es-toolkit'
 import { useMemo } from 'react'
 import { proxy, snapshot, subscribe, useSnapshot } from 'valtio'
 import type { IssueByList, IssueBySearch } from '../define.js'
 import type { DefaultStorage } from '../storage.js'
 import { storage } from '../storage.js'
-
-export enum SearchMode {
-  WebSearch = 'web-search',
-  LocalSearch = 'local-search',
-}
+import { SearchMode } from '../enums/SearchMode.js'
 
 const { mode } = storage.store
 export const state = proxy({
@@ -58,19 +55,47 @@ function filterIssues(
 
   if (mode === SearchMode.WebSearch || !searchText) return listAllIssues
 
-  const fzf = new Fzf<IssueByList[]>(listAllIssues, {
-    selector: (issue: IssueByList) =>
-      [
-        issue.title,
-        issue.body,
-        ...(issue.labels || []).map((l) => (typeof l === 'string' ? l : l.name)),
-      ]
-        .filter(Boolean)
-        .join(' '),
-  })
-  const result = fzf.find(searchText)
-  const list = result.map((resultItem: any) => resultItem.item)
-  return list
+  const useFzf = () => {
+    const fzf = new Fzf<IssueByList[]>(listAllIssues, {
+      selector: (issue: IssueByList) =>
+        [
+          issue.title,
+          issue.body,
+          ...(issue.labels || []).map((l) => (typeof l === 'string' ? l : l.name)),
+        ]
+          .filter(Boolean)
+          .join(' '),
+    })
+    const result = fzf.find(searchText)
+    const list = result.map((resultItem: any) => resultItem.item)
+    return list
+  }
+
+  function useFuse() {
+    const fuse = new Fuse<IssueByList>(listAllIssues, {
+      includeScore: true,
+      keys: [
+        { name: 'title', weight: 10 },
+        { name: 'body', weight: 1 },
+        {
+          name: 'labels',
+          weight: 0.5,
+          getFn(issue) {
+            return (issue.labels || [])
+              .map((l) => (typeof l === 'string' ? l : l.name))
+              .map((x) => x?.trim())
+              .filter(Boolean)
+          },
+        },
+      ],
+    })
+    const result = fuse.search(searchText)
+    const list = result.map((resultItem) => resultItem.item)
+    return list
+  }
+
+  // return useFzf()
+  return useFuse()
 }
 
 // useMemo for computed, example

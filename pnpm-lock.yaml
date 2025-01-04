@@ -26,6 +26,9 @@ importers:
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0
+      fuse.js:
+        specifier: ^7.0.0
+        version: 7.0.0
       fzf:
         specifier: ^0.5.2
         version: 0.5.2
@@ -51,6 +54,9 @@ importers:
       '@magicdawn/prettier-config':
         specifier: ^0.0.4
         version: 0.0.4
+      '@total-typescript/ts-reset':
+        specifier: ^0.6.1
+        version: 0.6.1
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -542,6 +548,9 @@ packages:
       react-devtools:
         optional: true
 
+  '@total-typescript/ts-reset@0.6.1':
+    resolution: {integrity: sha512-cka47fVSo6lfQDIATYqb/vO1nvFfbPw7uWLayIXIhGETj0wcOOlrlkobOMDNQOFr9QOafegUPq13V2+6vtD7yg==}
+
   '@types/aws-lambda@8.10.147':
     resolution: {integrity: sha512-nD0Z9fNIZcxYX5Mai2CTmFD7wX7UldCkW2ezCF8D1T5hdiLsnTWDGRpfRYntU6VjTdLQjOvyszru7I1c1oCQew==}
 
@@ -949,6 +958,10 @@ packages:
   fs-extra@11.2.0:
     resolution: {integrity: sha512-PmDi3uwK5nFuXh7XDTlVnS17xJS7vW36is2+w3xcv8SVxiB4NyATf4ctkVY5bkSjX0Y4nbvZCq1/EjtEyr9ktw==}
     engines: {node: '>=14.14'}
+
+  fuse.js@7.0.0:
+    resolution: {integrity: sha512-14F4hBIxqKvD4Zz/XjDc3y94mNZN6pRv3U13Udo0lNLCWRBUsrMv2xwcF/y/Z5sV6+FQW+/ow68cHpm4sunt8Q==}
+    engines: {node: '>=10'}
 
   fzf@0.5.2:
     resolution: {integrity: sha512-Tt4kuxLXFKHy8KT40zwsUPUkg1CrsgY25FxA2U/j/0WgEDCk3ddc/zLTCCcbSHX9FcKtLuVaDGtGE/STWC+j3Q==}
@@ -1971,6 +1984,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@total-typescript/ts-reset@0.6.1': {}
+
   '@types/aws-lambda@8.10.147': {}
 
   '@types/estree@1.0.6': {}
@@ -2444,6 +2459,8 @@ snapshots:
       graceful-fs: 4.2.10
       jsonfile: 6.1.0
       universalify: 2.0.0
+
+  fuse.js@7.0.0: {}
 
   fzf@0.5.2: {}
 

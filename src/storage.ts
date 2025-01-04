@@ -3,7 +3,7 @@
 import { environment } from '@raycast/api'
 import Conf from 'conf'
 import type { IssueByList } from './define.js'
-import { SearchMode } from './store/state.js'
+import { SearchMode } from './enums/SearchMode.js'
 
 // dir already namespaced
 const BASE_DIR = environment.supportPath
