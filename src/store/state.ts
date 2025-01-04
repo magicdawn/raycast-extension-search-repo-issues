@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Fzf } from 'fzf'
-import { isEqual, pick } from 'lodash-es'
+import { isEqual, pick } from 'es-toolkit'
 import { useMemo } from 'react'
 import { proxy, snapshot, subscribe, useSnapshot } from 'valtio'
 import type { IssueByList, IssueBySearch } from '../define.js'
