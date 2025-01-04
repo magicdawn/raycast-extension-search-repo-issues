@@ -1,3 +1,6 @@
 module.exports = {
-  reject: ['@types/node'],
+  reject: [
+    //
+    // '@types/node'
+  ],
 }

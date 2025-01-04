@@ -3,27 +3,15 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import ms from 'ms'
-import reusePromiseExports from 'reuse-promise'
 import type { IssueByList } from '../define.js'
 import { issuesCacheStorage } from '../storage.js'
 import { octokit, REPO, toastError } from '../util.js'
 import { state } from './state.js'
-
-const reusePromise = reusePromiseExports.default
+import pMemoize from 'p-memoize'
 
 const maxAge = ms('1d')
 
-export async function getAllIssues(force?: boolean): Promise<IssueByList[]> {
-  // cache
-  {
-    if (!force) {
-      const { issues, issuesUpdatedAt } = issuesCacheStorage.store
-      if (issues.length && issuesUpdatedAt && Date.now() - issuesUpdatedAt < maxAge) {
-        return issues
-      }
-    }
-  }
-
+const fetchAllIssues = pMemoize(async () => {
   const [owner, repo] = REPO.split('/')
 
   const iterator = octokit.paginate.iterator(octokit.rest.issues.listForRepo, {
@@ -50,14 +38,21 @@ export async function getAllIssues(force?: boolean): Promise<IssueByList[]> {
 
   // use it
   return issues
-}
+})
 
-export const getIssuesReused = reusePromise(getAllIssues)
+export async function getAllIssues(force?: boolean): Promise<IssueByList[]> {
+  // cache
+  const { issues, issuesUpdatedAt } = issuesCacheStorage.store
+  const shouldReuse =
+    !force && issues.length && issuesUpdatedAt && Date.now() - issuesUpdatedAt < maxAge
+  if (shouldReuse) return issues
+  return fetchAllIssues()
+}
 
 export async function refreshAllIssues(force?: boolean) {
   state.isLoading = true
   try {
-    const issues = await getIssuesReused(force)
+    const issues = await getAllIssues(force)
     state.listAllIssues = issues
   } catch (e: any) {
     console.error(e)

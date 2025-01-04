@@ -8,7 +8,10 @@ import type { IssueByList, IssueBySearch } from '../define.js'
 import type { DefaultStorage } from '../storage.js'
 import { storage } from '../storage.js'
 
-export type SearchMode = 'web-search' | 'local-search'
+export enum SearchMode {
+  WebSearch = 'web-search',
+  LocalSearch = 'local-search',
+}
 
 const { mode } = storage.store
 export const state = proxy({
@@ -53,7 +56,7 @@ function filterIssues(
 ): IssueByList[] {
   console.log('runing filterIssues: mode:"%s" searchText:"%s"', mode, searchText)
 
-  if (mode === 'web-search' || !searchText) return listAllIssues
+  if (mode === SearchMode.WebSearch || !searchText) return listAllIssues
 
   const fzf = new Fzf<IssueByList[]>(listAllIssues, {
     selector: (issue: IssueByList) =>

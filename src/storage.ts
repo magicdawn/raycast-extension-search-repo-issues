@@ -3,7 +3,7 @@
 import { environment } from '@raycast/api'
 import Conf from 'conf'
 import type { IssueByList } from './define.js'
-import type { SearchMode } from './store/state.js'
+import { SearchMode } from './store/state.js'
 
 // dir already namespaced
 const BASE_DIR = environment.supportPath
@@ -21,7 +21,7 @@ export const storage = new Conf<DefaultStorage>({
   cwd: BASE_DIR,
   configName: 'default',
   defaults: {
-    mode: 'local-search',
+    mode: SearchMode.LocalSearch,
   },
 })
 

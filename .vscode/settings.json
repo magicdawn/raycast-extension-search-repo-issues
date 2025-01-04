@@ -11,5 +11,6 @@
   "typescript.locale": "en",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
-  }
+  },
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true
 }

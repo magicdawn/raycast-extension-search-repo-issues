@@ -2,14 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import './typings/index.d.ts'
-import './typings/valtio.d.ts'
-
 import { Action, ActionPanel, Icon, List } from '@raycast/api'
 import { useMount } from 'ahooks'
 import { useSnapshot } from 'valtio'
 import type { Issue } from './define.js'
-import type { SearchMode } from './store/index.js'
+import { SearchMode } from './store/index.js'
 import { refreshAllIssues, state, webSearchIssues } from './store/index.js'
 import { REPO } from './util.js'
 
@@ -23,10 +20,10 @@ function stringifyLabels(labels: Issue['labels']) {
 }
 
 const onAppMount = () => {
-  if (state.mode === 'web-search') {
+  if (state.mode === SearchMode.WebSearch) {
     return webSearchIssues('')
   }
-  if (state.mode === 'local-search') {
+  if (state.mode === SearchMode.LocalSearch) {
     return refreshAllIssues()
   }
 }
@@ -39,10 +36,10 @@ const onModeChange = (newMode: SearchMode) => {
 const onSearchTextChange = (searchText: string) => {
   state.searchText = searchText
 
-  if (state.mode === 'web-search') {
+  if (state.mode === SearchMode.WebSearch) {
     webSearchIssues(searchText)
   }
-  if (state.mode === 'local-search') {
+  if (state.mode === SearchMode.LocalSearch) {
     // noop, use computed
   }
 }
@@ -52,8 +49,10 @@ const onActionLocalRefreshAllIssues = () => {
 }
 
 const onActionToggleMode = () => {
-  const newMode: SearchMode = state.mode === 'local-search' ? 'web-search' : 'local-search'
-  onModeChange(newMode)
+  const list = Object.values(SearchMode)
+  const currentIndex = list.indexOf(state.mode)
+  const next = list[(currentIndex + 1) % list.length] ?? list[0]
+  onModeChange(next)
 }
 
 export default function Command() {
@@ -68,10 +67,10 @@ export default function Command() {
     localFilteredIssues,
   } = useSnapshot(state)
 
-  const issueList = mode === 'local-search' ? localFilteredIssues : searchResultIssues
+  const issueList = mode === SearchMode.LocalSearch ? localFilteredIssues : searchResultIssues
 
   const subtitle =
-    mode === 'local-search'
+    mode === SearchMode.LocalSearch
       ? `找到 ${issueList.length} 条`
       : searchResultTotalCount === searchResultIssues.length
         ? `找到 ${searchResultIssues.length} 条`
@@ -93,13 +92,13 @@ export default function Command() {
         >
           <List.Dropdown.Section title='搜索类型'>
             <List.Dropdown.Item
-              key={'local-search' as SearchMode}
-              value={'local-search' as SearchMode}
+              key={SearchMode.LocalSearch as SearchMode}
+              value={SearchMode.LocalSearch as SearchMode}
               title={'search with Local fzf filter'}
             />
             <List.Dropdown.Item
-              key={'web-search' as SearchMode}
-              value={'web-search' as SearchMode}
+              key={SearchMode.WebSearch}
+              value={SearchMode.WebSearch}
               title={'search with GitHub API'}
             />
           </List.Dropdown.Section>
@@ -122,7 +121,7 @@ export default function Command() {
                   </ActionPanel.Section>
 
                   <ActionPanel.Section>
-                    {!isLoading && mode === 'local-search' && (
+                    {!isLoading && mode === SearchMode.LocalSearch && (
                       <Action
                         icon={Icon.RotateClockwise}
                         title='刷新 issues (默认缓存一天)'
@@ -140,7 +139,7 @@ export default function Command() {
                     <Action
                       icon={Icon.Switch}
                       title={`切换搜索模式 (to ${
-                        mode === 'local-search' ? 'GitHub API' : 'Local filter'
+                        mode === SearchMode.LocalSearch ? 'GitHub API' : 'Local filter'
                       })`}
                       onAction={onActionToggleMode}
                     />
