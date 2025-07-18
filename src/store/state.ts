@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { Fzf } from 'fzf'
 import Fuse from 'fuse.js'
 import { isEqual, pick } from 'es-toolkit'
 import { useMemo } from 'react'
@@ -26,11 +23,7 @@ export const state = proxy({
   listAllIssues: [] as IssueByList[],
   get localFilteredIssues() {
     const { mode, listAllIssues, searchText } = this
-    return filterIssues(
-      mode,
-      searchText,
-      listAllIssues /* force remove readonly */ as IssueByList[],
-    )
+    return filterIssues(mode, searchText, listAllIssues /* force remove readonly */ as IssueByList[])
   },
 })
 
@@ -46,30 +39,10 @@ subscribe(state, () => {
   lastPicked = picked
 })
 
-function filterIssues(
-  mode: SearchMode,
-  searchText: string,
-  listAllIssues: IssueByList[],
-): IssueByList[] {
+function filterIssues(mode: SearchMode, searchText: string, listAllIssues: IssueByList[]): IssueByList[] {
   console.log('runing filterIssues: mode:"%s" searchText:"%s"', mode, searchText)
 
   if (mode === SearchMode.WebSearch || !searchText) return listAllIssues
-
-  const useFzf = () => {
-    const fzf = new Fzf<IssueByList[]>(listAllIssues, {
-      selector: (issue: IssueByList) =>
-        [
-          issue.title,
-          issue.body,
-          ...(issue.labels || []).map((l) => (typeof l === 'string' ? l : l.name)),
-        ]
-          .filter(Boolean)
-          .join(' '),
-    })
-    const result = fzf.find(searchText)
-    const list = result.map((resultItem: any) => resultItem.item)
-    return list
-  }
 
   function useFuse() {
     const fuse = new Fuse<IssueByList>(listAllIssues, {
@@ -94,7 +67,6 @@ function filterIssues(
     return list
   }
 
-  // return useFzf()
   return useFuse()
 }
 

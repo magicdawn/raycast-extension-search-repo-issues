@@ -32,7 +32,7 @@ not published to Raycast store & will not, use source code instead
 
 Two modes
 
-- local filter: list all issues of the repo conffigured, and filter with local fzf search. initial list all is slow, but have a instant search experience later. (cache for 1d)
+- local filter: list all issues of the repo conffigured, and filter with local fuzzy search. initial list all is slow, but have a instant search experience later. (cache for 1d)
 - github api search: search via github api every time
 
 ## License
